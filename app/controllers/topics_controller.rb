@@ -1,4 +1,4 @@
-class TopicsController < ActionController::API
+class TopicsController < ApplicationController
   def index
     @topics = Topic.all
   end
