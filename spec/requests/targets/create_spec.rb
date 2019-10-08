@@ -1,17 +1,16 @@
 require 'rails_helper'
 
 describe 'POST /targets', type: :request do
-
   let!(:user)  { create(:user) }
   let!(:topic) { create(:topic) }
 
   let(:params) do
     {
-      title:     Faker::Cannabis.buzzword,
-      topic_id:  topic.id,
-      latitude:  Faker::Address.latitude,
+      title: Faker::Cannabis.buzzword,
+      topic_id: topic.id,
+      latitude: Faker::Address.latitude,
       longitude: Faker::Address.longitude,
-      radius:    Faker::Number.between(from: 1, to: 5000)
+      radius: Faker::Number.between(from: 1, to: 5000)
     }
   end
 
@@ -47,4 +46,17 @@ describe 'POST /targets', type: :request do
     end
   end
 
+  context 'when the user has 10 targets already' do
+    let!(:targets) { create_list(:target, 10, user: user) }
+
+    it 'returns a bad request response' do
+      subject
+      expect(response).to have_http_status(:bad_request)
+    end
+
+    it 'returns the corresponding error' do
+      subject
+      expect(json['errors']['limit'][0]).to eq(I18n.t('max_targets'))
+    end
+  end
 end
