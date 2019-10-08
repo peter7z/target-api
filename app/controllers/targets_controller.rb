@@ -5,6 +5,10 @@ class TargetsController < ApplicationController
     current_user.targets.create!(target_params)
   end
 
+  def index
+    @targets = current_user.targets.includes(:topic)
+  end
+
   private
 
   def target_params

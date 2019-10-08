@@ -1,3 +1,4 @@
+require 'rspec/json_expectations'
 require 'helpers'
 
 RSpec.configure do |config|

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
   mount_devise_token_auth_for 'User', at: 'user'
   resources :topics, only: :index
-  resources :targets, only: :create
+  resources :targets, only: %i[create index]
 end
