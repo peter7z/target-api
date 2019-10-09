@@ -25,4 +25,12 @@ class Target < ApplicationRecord
   validates :title, presence: true
   validates :radius, presence: true, numericality: { greater_than: 0, less_or_equal_than: 5000 }
   validates :latitude, :longitude, presence: true, numericality: true
+
+  validate :targets_count_limit, on: :create
+
+  def targets_count_limit
+    return unless self.user.targets.size >= 10
+
+    errors.add(:limit, I18n.t('max_targets'))
+  end
 end
